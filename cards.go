@@ -15,16 +15,12 @@ type Deck struct {
 	Cards []Card
 }
 
-type Hand struct {
-	Cards []Card
-}
-
 func main() {
 	rand.Seed(time.Now().UTC().UnixNano())
 }
 
-// NewDeck creates a deck of unshuffled cards.
-func NewDeck() Deck {
+// New creates a new Deck of unshuffled cards.
+func New() Deck {
 	// d := make([]Card, 52)
 	var d []Card
 	for _, s := range suits {
@@ -55,20 +51,8 @@ func (d *Deck) Shuffle() {
 	}
 }
 
-func NewHand() Hand {
-	return Hand{}
-}
-
-func (h *Hand) Draw(d *Deck, n int) {
-	h.Cards, d.Cards = d.Cards[0:n], d.Cards[n+1:]
-}
-
-func (h Hand) String() string {
-	var g []string
-	for _, c := range h.Cards {
-		g = append(g, c.Glyph)
-	}
-	return strings.Join(g, " ")
+func (dest *Deck) DrawFrom(src *Deck, n int) {
+	dest.Cards, src.Cards = src.Cards[0:n], src.Cards[n:]
 }
 
 func (d Deck) String() string {
