@@ -19,10 +19,15 @@ func main() {
 	rand.Seed(time.Now().UTC().UnixNano())
 }
 
-// New creates a new Deck of unshuffled cards.
-func New() Deck {
-	// d := make([]Card, 52)
+// New creates a new Deck.
+// If filled is true, the deck will contain 52 unshuffled cards, or else it will be empty.
+func New(filled bool) Deck {
+	if !filled {
+		return Deck{}
+	}
+
 	var d []Card
+
 	for _, s := range suits {
 		for v := 0; v < 13; v++ {
 			f := names[v]
@@ -52,7 +57,8 @@ func (d *Deck) Shuffle() {
 }
 
 func (dest *Deck) DrawFrom(src *Deck, n int) {
-	dest.Cards, src.Cards = src.Cards[0:n], src.Cards[n:]
+	dest.Cards = append(dest.Cards, src.Cards[0:n]...)
+	src.Cards = src.Cards[n:]
 }
 
 func (d Deck) String() string {
